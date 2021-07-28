@@ -56,8 +56,8 @@ tikzHead=r"""
 \foreach \y/\ytext in {-6/-6, -3/-3, 0/0, 3/3, 6/6}
 \draw[shift={(-8,\y)}] (2pt,0pt) -- (-2pt,0pt) node[left] {$\ytext$};
 """
-tablehead="""\\begin{tabular}[c]{|>{\\centering\\arraybackslash}p{20pt}|>{\\centering\\arraybackslash}p{60pt}|>{\\centering\\arraybackslash}p{60pt}|>{\\arraybackslash}p{200pt}|}\\hline
-Nr & Herren & Damen & Anmerkungen \\\\ \\hline"""
+tablehead="""\\begin{tabular}[c]{|>{\\centering\\arraybackslash}p{20pt}|>{\\centering\\arraybackslash}p{60pt}|>{\\centering\\arraybackslash}p{60pt}|>{\\centering\\arraybackslash}p{30pt}|>{\\arraybackslash}p{150pt}|}\\hline
+Nr & Herren & Damen & Weg & Anmerkungen \\\\ \\hline"""
 
 
 print(document_head,block1,block2)

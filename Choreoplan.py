@@ -4,7 +4,7 @@ from tkinter import Tk
 import exportChoreo as exportString
 
 #3 for male plan, 11 for female plan
-plan_mode=3
+plan_mode=11
 
 colors=["red","green","yellow","Apricot","white","lightgray","orange","cyan"]
 
@@ -85,10 +85,17 @@ def statString(distance_dict):
     d_min = min(vals)
     d_median = np.median(vals)
     d_mean = np.mean(vals)
-    out=f"\\makecell[lt]{{\nMax : {d_max:.1f} ({(d_max-d_mean)*100/d_mean:+.0f}\\%)\\\\ \n"
-    out+=f"Min : {d_min:.1f} ({(d_min-d_mean)*100/d_mean:+.0f}\\%)\\\\ \n"
-    out+=f"Med : {d_median:.1f}\\\\ \n"
-    out+=f"Mean: {d_mean:.1f}\\\\}}"
+    d_var=np.var(vals)
+
+    #Catch division by zero:
+    divi = 1 if d_mean == 0 else d_mean
+
+    out=f"\\makecell[lt]{{\n"
+    out+=f"Max: {d_max:.1f}m ({(d_max-d_mean)*100/divi:+.0f}\\%)\\\\ \n"
+    out+=f"Min : {d_min:.2f}m ({(d_min-d_mean)*100/divi:+.0f}\\%)\\\\ \n"
+    out+=f"Med: {d_median:.2f}m\\\\ \n"
+    out+=f"Mean: {d_mean:.2f}m\\\\"
+    out+=f"Var: {d_var:.2f}m\\\\}}"
     return out
 
 
@@ -134,12 +141,13 @@ class Bild(D2Dict):
         distance=(self-prev).distanceTo()
         out=exportString.tablehead
         for i in range(len(pairs)):
-            out+="\n"+"\\rule{{0pt}}{{11pt}} {} &  {:.1f} / {:.1f} &  {:.1f} / {:.1f} & ".format(
+            out+="\n"+"\\rule{{0pt}}{{11pt}} {} &  {:.1f} / {:.1f} &  {:.1f} / {:.1f} & {:.2f}m &".format(
                 i+1,
                 self.pos_dict[pairs[i][0]] [0],
                 self.pos_dict[pairs[i][0]] [1],
                 self.pos_dict[pairs[i][1]] [0],
-                self.pos_dict[pairs[i][1]] [1]
+                self.pos_dict[pairs[i][1]] [1],
+                distance[pairs[i][int((plan_mode%3)/2)]]
             )
             if i==0 and not i==len(pairs)-1:
                 out+=  f"\\multirow[t]{{8}}{{*}}{{{statString(distance)}}}"
@@ -147,7 +155,7 @@ class Bild(D2Dict):
                 out+= "\\\\ \\hline"
 
             if i <len(pairs)-1:
-                out+="\\\\ \\cline{1-3}"
+                out+="\\\\ \\cline{1-4}"
 
         out+="\n\end{tabular}"
         return out
@@ -285,6 +293,6 @@ if __name__ == "__main__":
     scene_positions = [Bild(D2VecFromChoreoMaker(scene["Positions"]),name=scene["Name"]) for scene in scenes]
     #for s_pos in scene_positions:
         #print(s_pos)
-
+    scene_positions=scene_positions[0:3]
     Test.test5()
     print("Ende")
