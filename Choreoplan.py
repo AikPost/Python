@@ -8,6 +8,7 @@ plan_mode=3
 
 colors=["red","green","yellow","Apricot","white","lightgray","orange","cyan"]
 
+
 name_dict = {
     "3":"1/Luis",
     "4":"2/Micha",
